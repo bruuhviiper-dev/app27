@@ -1,0 +1,132 @@
+[
+  {
+    "id": "sozinha",
+    "name": "Fotos Sozinha",
+    "emoji": "💅",
+    "gradient": [
+      "#ee9ca7",
+      "#b24592"
+    ],
+    "premium": false
+  },
+  {
+    "id": "sorrindo",
+    "name": "Sorrindo",
+    "emoji": "😄",
+    "gradient": [
+      "#f9d423",
+      "#ff4e50"
+    ],
+    "premium": false
+  },
+  {
+    "id": "atitude",
+    "name": "Atitude",
+    "emoji": "🔥",
+    "gradient": [
+      "#ee0979",
+      "#ff6a00"
+    ],
+    "premium": false
+  },
+  {
+    "id": "casal",
+    "name": "Amor e Casal",
+    "emoji": "❤️",
+    "gradient": [
+      "#f857a6",
+      "#ff5858"
+    ],
+    "premium": false
+  },
+  {
+    "id": "indiretas",
+    "name": "Indiretas",
+    "emoji": "😏",
+    "gradient": [
+      "#8e2de2",
+      "#4a00e0"
+    ],
+    "premium": false
+  },
+  {
+    "id": "viagem",
+    "name": "Viagem e Praia",
+    "emoji": "✈️",
+    "gradient": [
+      "#2af598",
+      "#009efd"
+    ],
+    "premium": false
+  },
+  {
+    "id": "tbt",
+    "name": "TBT e Antigas",
+    "emoji": "📼",
+    "gradient": [
+      "#5f2c82",
+      "#49a09d"
+    ],
+    "premium": false
+  },
+  {
+    "id": "aniversario",
+    "name": "Aniversário",
+    "emoji": "🎂",
+    "gradient": [
+      "#ff6a88",
+      "#ff99ac"
+    ],
+    "premium": false
+  },
+  {
+    "id": "treino",
+    "name": "Treino e Motivação",
+    "emoji": "💪",
+    "gradient": [
+      "#43e97b",
+      "#38f9d7"
+    ],
+    "premium": false
+  },
+  {
+    "id": "fe",
+    "name": "Fé e Gratidão",
+    "emoji": "🙏",
+    "gradient": [
+      "#fbc2eb",
+      "#a18cd1"
+    ],
+    "premium": false
+  },
+  {
+    "id": "musicas",
+    "name": "Vibe Musical",
+    "emoji": "🎧",
+    "gradient": [
+      "#0f0c29",
+      "#302b63"
+    ],
+    "premium": false
+  },
+  {
+    "id": "curtas",
+    "name": "Curtas p/ Bio",
+    "emoji": "✍️",
+    "gradient": [
+      "#ff6a00",
+      "#ee0979"
+    ],
+    "premium": false
+  },
+  {
+    "id": "ingles",
+    "name": "Em Inglês",
+    "emoji": "🌎",
+    "gradient": [
+      "#4b6cb7",
+      "#182848"
+    ],
+    "premium": false
+  }
+]
