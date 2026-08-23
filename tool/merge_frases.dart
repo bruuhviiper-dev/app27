@@ -15,7 +15,11 @@ import 'dart:io';
 /// ordem, e aberturas iguais ficam espalhadas (some a sensação de "tudo igual").
 ///
 /// Rode:  dart run tool/merge_frases.dart
-const _origDirs = ['tool/frases_orig', 'tool/frases_orig2'];
+const _origDirs = [
+  'tool/frases_orig',
+  'tool/frases_orig2',
+  'tool/frases_orig3',
+];
 
 void main() {
   final index = (json.decode(File('assets/frases/index.json').readAsStringSync())
