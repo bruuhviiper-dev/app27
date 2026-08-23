@@ -53,3 +53,6 @@ key.properties
 **/android/key.properties
 
 **/android/key.properties
+
+# Kotlin build cache
+android/.kotlin/
