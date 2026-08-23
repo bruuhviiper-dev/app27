@@ -242,7 +242,7 @@ class _MessageOfDayState extends State<_MessageOfDay> {
             children: [
               const Icon(Icons.auto_awesome_rounded, size: 16),
               const SizedBox(width: 6),
-              const Text('FRASE BONITA',
+              const Text('LEGENDA DO DIA',
                   style: TextStyle(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.4,

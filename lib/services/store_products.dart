@@ -52,7 +52,7 @@ class StoreProducts {
     id: 'pack_oracoes',
     kind: ProductKind.pack,
     title: 'Pacote Exclusivo',
-    description: 'Frases Para Refletir, Inspiração e Bonitas Curtas.',
+    description: 'Legendas exclusivas para suas fotos e status.',
     fallbackPrice: 'R\$ 9,90',
     emoji: '🌟',
   );

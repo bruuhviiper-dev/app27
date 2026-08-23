@@ -49,7 +49,7 @@ class MoreScreen extends StatelessWidget {
             leading: const Icon(Icons.notifications_active_rounded,
                 color: Color(0xFF7C3AED)),
             title: const Text('Lembrete diário'),
-            subtitle: const Text('Receba uma frase bonita no seu horário'),
+            subtitle: const Text('Receba uma legenda no seu horário'),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const SettingsScreen()),
