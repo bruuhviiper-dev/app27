@@ -79,6 +79,7 @@ class _CreateScreenState extends State<CreateScreen> {
   int? _seed; // fundo procedural (gerado no aparelho)
   int _filter = 0; // filtro de cor
   bool _busy = false;
+  bool _polaroid = false; // moldura polaroid (foto em cima, legenda no branco)
 
   static const _formats = [
     _Format('Story', 9 / 16),
@@ -234,6 +235,63 @@ class _CreateScreenState extends State<CreateScreen> {
         ],
       );
 
+  /// Cartão no estilo POLAROID: moldura branca, foto/fundo na "janela" de cima
+  /// e a legenda escrita embaixo (no branco). Capturado inteiro ao salvar.
+  Widget _polaroidCard(List<Color> bgColors, DecorationImage? bgImage,
+      Color? filterColor, String text, String sig) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
+      child: Column(
+        children: [
+          Expanded(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                gradient: (bgImage == null && _seed == null)
+                    ? AppTheme.gradient(bgColors)
+                    : null,
+                image: bgImage,
+              ),
+              child: Stack(
+                children: [
+                  if (_seed != null)
+                    Positioned.fill(
+                        child:
+                            CustomPaint(painter: ProceduralPainter(_seed!))),
+                  if (filterColor != null)
+                    Positioned.fill(child: Container(color: filterColor)),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(6, 10, 6, 2),
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.getFont(
+                _fonts[_font],
+                color: const Color(0xFF2B2140),
+                fontSize: 17,
+                height: 1.2,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          if (sig.isNotEmpty)
+            Text(sig,
+                style: const TextStyle(
+                    color: Color(0xFF9AA0AE),
+                    fontSize: 9,
+                    fontWeight: FontWeight.w600)),
+        ],
+      ),
+    );
+  }
+
   /// Limpa qualquer fundo-imagem/foto/procedural (volta pro gradiente).
   void _clearImages() {
     _photoPath = null;
@@ -289,7 +347,9 @@ class _CreateScreenState extends State<CreateScreen> {
                 aspectRatio: _formats[_format].ratio,
                 child: RepaintBoundary(
                   key: _cardKey,
-                  child: Container(
+                  child: _polaroid
+                      ? _polaroidCard(bg.colors, bgImage, filterColor, text, sig)
+                      : Container(
                     decoration: BoxDecoration(
                       gradient: (bgImage == null && _seed == null)
                           ? AppTheme.gradient(bg.colors)
@@ -359,6 +419,24 @@ class _CreateScreenState extends State<CreateScreen> {
                   selected: _format == i,
                   onSelected: (_) => setState(() => _format = i),
                 ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          _label(context, 'Moldura'),
+          Wrap(
+            spacing: 8,
+            children: [
+              ChoiceChip(
+                label: const Text('Padrão'),
+                selected: !_polaroid,
+                onSelected: (_) => setState(() => _polaroid = false),
+              ),
+              ChoiceChip(
+                label: const Text('📸 Polaroid'),
+                selected: _polaroid,
+                onSelected: (_) => setState(() => _polaroid = true),
+              ),
             ],
           ),
           const SizedBox(height: 14),
