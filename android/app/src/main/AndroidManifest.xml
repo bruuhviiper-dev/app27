@@ -13,10 +13,10 @@
         android:label="Frases para Fotos"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <!-- AdMob App ID de TESTE (trocar pelo real do 'Frases para Fotos' antes de publicar) -->
+        <!-- AdMob App ID REAL (app27 — Frases para Fotos) -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-5880219350817278~2004081843"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -19,11 +19,11 @@ class AdsService with WidgetsBindingObserver {
   static const _testRewarded = 'ca-app-pub-3940256099942544/5224354917';
   static const _testAppOpen = 'ca-app-pub-3940256099942544/9257395921';
 
-  // IDs reais (app26 — Frases para Fotos) — TODO: preencher com os IDs reais do AdMob.
-  // Enquanto estiverem como placeholder (0000...), o app usa automaticamente os IDs de TESTE.
-  static const _realBanner = 'ca-app-pub-0000000000000000/0000000000';
+  // IDs reais (app27 — Frases para Fotos). Intersticial/app-open desligados por
+  // política (só banner + premiado), por isso seguem como placeholder.
+  static const _realBanner = 'ca-app-pub-5880219350817278/2170663452';
   static const _realInterstitial = 'ca-app-pub-0000000000000000/0000000000';
-  static const _realRewarded = 'ca-app-pub-0000000000000000/0000000000';
+  static const _realRewarded = 'ca-app-pub-5880219350817278/4612993962';
   static const _realAppOpen = 'ca-app-pub-0000000000000000/0000000000';
   static bool _ph(String id) => id.contains('0000000000');
 
