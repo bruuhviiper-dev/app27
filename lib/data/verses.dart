@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+import '../l10n/lang.dart';
 import 'models.dart';
 
 /// Banco de FRASES BONITAS (100% OFFLINE) carregado de assets/frases/*.json.
@@ -24,7 +25,9 @@ class VerseData {
   /// abrir a home), assim as telas sempre encontram o conteúdo pronto.
   static Future<void> load() async {
     if (_loaded) return;
-    final indexRaw = await rootBundle.loadString('assets/frases/index.json');
+    // Conteúdo por idioma do aparelho: pt na raiz, en/es em subpastas.
+    final base = Lang.isPt ? 'assets/frases' : 'assets/frases/${Lang.code}';
+    final indexRaw = await rootBundle.loadString('$base/index.json');
     final index = (json.decode(indexRaw) as List).cast<Map<String, dynamic>>();
 
     final cats = <VerseCategory>[];
@@ -32,7 +35,7 @@ class VerseData {
       final id = meta['id'] as String;
       List<Verse> verses = const [];
       try {
-        final raw = await rootBundle.loadString('assets/frases/$id.json');
+        final raw = await rootBundle.loadString('$base/$id.json');
         final list = (json.decode(raw) as List).cast<String>();
         verses = [for (final t in list) Verse(t)];
       } catch (_) {

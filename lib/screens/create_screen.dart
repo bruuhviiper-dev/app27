@@ -19,6 +19,7 @@ import '../data/photo_backgrounds.dart';
 import '../data/procedural_bg.dart';
 import '../data/story_backgrounds.dart';
 import '../data/textures.dart';
+import '../l10n/lang.dart';
 import '../services/ads_service.dart';
 import '../services/app_state.dart';
 
@@ -86,6 +87,13 @@ class _CreateScreenState extends State<CreateScreen> {
     _Format('Quadrado', 1),
     _Format('Retrato', 4 / 5),
   ];
+
+  // Rótulo do formato traduzido pelo idioma do aparelho.
+  String _fmtLabel(String label) => switch (label) {
+        'Quadrado' => Lang.t('Quadrado', 'Square', 'Cuadrado'),
+        'Retrato' => Lang.t('Retrato', 'Portrait', 'Retrato'),
+        _ => 'Story',
+      };
 
   static const _fonts = [
     'Lora',
@@ -161,7 +169,11 @@ class _CreateScreenState extends State<CreateScreen> {
           File('${dir.path}/frase_${DateTime.now().millisecondsSinceEpoch}.png');
       await file.writeAsBytes(bytes);
       await Share.shareXFiles([XFile(file.path)],
-          text: noWatermark ? '' : 'Feito no app Frases para Fotos 📸');
+          text: noWatermark
+              ? ''
+              : Lang.t('Feito no app Frases para Fotos 📸',
+                  'Made with Photo Captions 📸',
+                  'Hecho con Frases para Fotos 📸'));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -173,15 +185,18 @@ class _CreateScreenState extends State<CreateScreen> {
     try {
       final bytes = await _capture();
       if (bytes == null) return;
-      await Gal.putImageBytes(bytes, album: 'Frases para Fotos');
+      await Gal.putImageBytes(bytes, album: Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos'));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Imagem salva na galeria! 📥')));
+            SnackBar(content: Text(Lang.t('Imagem salva na galeria! 📥',
+                'Image saved to gallery! 📥',
+                '¡Imagen guardada en la galería! 📥'))));
       }
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Não foi possível salvar.')));
+            SnackBar(content: Text(Lang.t('Não foi possível salvar.',
+                'Couldn\'t save.', 'No se pudo guardar.'))));
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -206,18 +221,19 @@ class _CreateScreenState extends State<CreateScreen> {
     final v = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Sua assinatura'),
+        title: Text(Lang.t('Sua assinatura', 'Your signature', 'Tu firma')),
         content: TextField(
           controller: c,
           autofocus: true,
-          decoration: const InputDecoration(hintText: '@seu_perfil ou seu nome'),
+          decoration: InputDecoration(hintText: Lang.t('@seu_perfil ou seu nome',
+              '@your_handle or your name', '@tu_perfil o tu nombre')),
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx), child: const Text('Cancelar')),
+              onPressed: () => Navigator.pop(ctx), child: Text(Lang.t('Cancelar', 'Cancel', 'Cancelar'))),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, c.text),
-              child: const Text('Salvar')),
+              child: Text(Lang.t('Salvar', 'Save', 'Guardar'))),
         ],
       ),
     );
@@ -309,7 +325,7 @@ class _CreateScreenState extends State<CreateScreen> {
     final color = _colors[_color];
     final filterColor = CardFilters.color(_filter);
     final text = _controller.text.trim().isEmpty
-        ? 'Escreva a sua frase aqui...'
+        ? Lang.t('Escreva a sua frase aqui...', 'Write your caption here...', 'Escribe tu frase aquí...')
         : _controller.text.trim();
 
     // Prioridade do fundo: foto do usuário > foto real > fundo-imagem > textura.
@@ -331,10 +347,12 @@ class _CreateScreenState extends State<CreateScreen> {
 
     final sig = state.customSignature.isNotEmpty
         ? state.customSignature
-        : (state.canRemoveWatermark ? '' : '📸 Frases para Fotos');
+        : (state.canRemoveWatermark
+            ? ''
+            : '📸 ${Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos')}');
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Criar (Editor)')),
+      appBar: AppBar(title: Text(Lang.t('Criar (Editor)', 'Create (Editor)', 'Crear (Editor)'))),
       body: ListView(
         padding: EdgeInsets.fromLTRB(
             16, 12, 16, 28 + MediaQuery.of(context).padding.bottom),
@@ -400,7 +418,7 @@ class _CreateScreenState extends State<CreateScreen> {
             textCapitalization: TextCapitalization.sentences,
             onChanged: (_) => setState(() {}),
             decoration: InputDecoration(
-              hintText: 'Escreva a sua frase...',
+              hintText: Lang.t('Escreva a sua frase...', 'Write your caption...', 'Escribe tu frase...'),
               filled: true,
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -409,13 +427,13 @@ class _CreateScreenState extends State<CreateScreen> {
           ),
           const SizedBox(height: 16),
 
-          _label(context, 'Formato'),
+          _label(context, Lang.t('Formato', 'Format', 'Formato')),
           Wrap(
             spacing: 8,
             children: [
               for (var i = 0; i < _formats.length; i++)
                 ChoiceChip(
-                  label: Text(_formats[i].label),
+                  label: Text(_fmtLabel(_formats[i].label)),
                   selected: _format == i,
                   onSelected: (_) => setState(() => _format = i),
                 ),
@@ -423,12 +441,12 @@ class _CreateScreenState extends State<CreateScreen> {
           ),
           const SizedBox(height: 14),
 
-          _label(context, 'Moldura'),
+          _label(context, Lang.t('Moldura', 'Frame', 'Marco')),
           Wrap(
             spacing: 8,
             children: [
               ChoiceChip(
-                label: const Text('Padrão'),
+                label: Text(Lang.t('Padrão', 'Default', 'Estándar')),
                 selected: !_polaroid,
                 onSelected: (_) => setState(() => _polaroid = false),
               ),
@@ -441,7 +459,7 @@ class _CreateScreenState extends State<CreateScreen> {
           ),
           const SizedBox(height: 14),
 
-          _label(context, 'Fontes'),
+          _label(context, Lang.t('Fontes', 'Fonts', 'Fuentes')),
           SizedBox(
             height: 44,
             child: ListView.separated(
@@ -470,7 +488,7 @@ class _CreateScreenState extends State<CreateScreen> {
           ),
           const SizedBox(height: 14),
 
-          _label(context, 'Cor do texto'),
+          _label(context, Lang.t('Cor do texto', 'Text color', 'Color del texto')),
           Row(
             children: [
               for (var i = 0; i < _colors.length; i++)
@@ -498,7 +516,7 @@ class _CreateScreenState extends State<CreateScreen> {
           const SizedBox(height: 14),
 
           // ---- Fundos (gradientes) ----
-          _label(context, 'Fundos'),
+          _label(context, Lang.t('Fundos', 'Backgrounds', 'Fondos')),
           SizedBox(
             height: 56,
             child: ListView.separated(
@@ -538,7 +556,7 @@ class _CreateScreenState extends State<CreateScreen> {
           // ---- Criativos (fundos procedurais, gerados no aparelho) ----
           Row(
             children: [
-              Text('Criativos', style: Theme.of(context).textTheme.titleSmall),
+              Text(Lang.t('Criativos', 'Creative', 'Creativos'), style: Theme.of(context).textTheme.titleSmall),
               const Spacer(),
               TextButton.icon(
                 onPressed: () => setState(() {
@@ -546,7 +564,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   _seed = math.Random().nextInt(ProceduralBg.variety);
                 }),
                 icon: const Icon(Icons.shuffle_rounded, size: 18),
-                label: const Text('Surpreenda'),
+                label: Text(Lang.t('Surpreenda', 'Surprise', 'Sorpréndeme')),
                 style: TextButton.styleFrom(
                     visualDensity: VisualDensity.compact,
                     padding: const EdgeInsets.symmetric(horizontal: 8)),
@@ -571,13 +589,13 @@ class _CreateScreenState extends State<CreateScreen> {
                         color: Theme.of(context).colorScheme.primaryContainer,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.play_circle_fill_rounded, size: 20),
-                          SizedBox(height: 2),
-                          Text('+ mais',
-                              style: TextStyle(
+                          const Icon(Icons.play_circle_fill_rounded, size: 20),
+                          const SizedBox(height: 2),
+                          Text(Lang.t('+ mais', '+ more', '+ más'),
+                              style: const TextStyle(
                                   fontSize: 10, fontWeight: FontWeight.w700)),
                         ],
                       ),
@@ -610,7 +628,7 @@ class _CreateScreenState extends State<CreateScreen> {
           const SizedBox(height: 14),
 
           // ---- Fundos-imagem (offline) ----
-          _label(context, 'Fundos-imagem'),
+          _label(context, Lang.t('Fundos-imagem', 'Image backgrounds', 'Fondos de imagen')),
           SizedBox(
             height: 64,
             child: ListView.separated(
@@ -647,7 +665,7 @@ class _CreateScreenState extends State<CreateScreen> {
           const SizedBox(height: 14),
 
           // ---- Texturas (offline) ----
-          _label(context, 'Texturas'),
+          _label(context, Lang.t('Texturas', 'Textures', 'Texturas')),
           SizedBox(
             height: 64,
             child: ListView.separated(
@@ -687,7 +705,7 @@ class _CreateScreenState extends State<CreateScreen> {
             padding: const EdgeInsets.only(bottom: 8),
             child: Row(
               children: [
-                Text('Fotos reais',
+                Text(Lang.t('Fotos reais', 'Real photos', 'Fotos reales'),
                     style: Theme.of(context).textTheme.titleSmall),
                 const SizedBox(width: 8),
                 Container(
@@ -696,8 +714,8 @@ class _CreateScreenState extends State<CreateScreen> {
                   decoration: BoxDecoration(
                       color: const Color(0xFF16A34A),
                       borderRadius: BorderRadius.circular(20)),
-                  child: const Text('GRÁTIS',
-                      style: TextStyle(
+                  child: Text(Lang.t('GRÁTIS', 'FREE', 'GRATIS'),
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.w800)),
@@ -754,7 +772,7 @@ class _CreateScreenState extends State<CreateScreen> {
           const SizedBox(height: 14),
 
           // ---- Filtro de cor ----
-          _label(context, 'Filtro'),
+          _label(context, Lang.t('Filtro', 'Filter', 'Filtro')),
           Wrap(
             spacing: 8,
             children: [
@@ -775,7 +793,7 @@ class _CreateScreenState extends State<CreateScreen> {
                 child: OutlinedButton.icon(
                   onPressed: _pickPhoto,
                   icon: const Icon(Icons.add_photo_alternate_rounded),
-                  label: const Text('Sua foto'),
+                  label: Text(Lang.t('Sua foto', 'Your photo', 'Tu foto')),
                 ),
               ),
               const SizedBox(width: 10),
@@ -783,7 +801,7 @@ class _CreateScreenState extends State<CreateScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () => _editSignature(state),
                   icon: const Icon(Icons.draw_rounded),
-                  label: const Text('Assinatura'),
+                  label: Text(Lang.t('Assinatura', 'Signature', 'Firma')),
                 ),
               ),
             ],
@@ -797,24 +815,24 @@ class _CreateScreenState extends State<CreateScreen> {
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2))
                 : const Icon(Icons.share_rounded),
-            label: const Text('Compartilhar imagem'),
+            label: Text(Lang.t('Compartilhar imagem', 'Share image', 'Compartir imagen')),
           ),
           const SizedBox(height: 10),
           OutlinedButton.icon(
             onPressed: _busy ? null : _saveGallery,
             icon: const Icon(Icons.download_rounded),
-            label: const Text('Salvar na galeria (HD)'),
+            label: Text(Lang.t('Salvar na galeria (HD)', 'Save to gallery (HD)', 'Guardar en galería (HD)')),
           ),
           const SizedBox(height: 10),
           TextButton.icon(
             onPressed: () {
               final t = _controller.text.trim();
               if (t.isNotEmpty) {
-                Share.share('$t\n\n📸 Frases para Fotos');
+                Share.share('$t\n\n📸 ${Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos')}');
               }
             },
             icon: const Icon(Icons.text_fields_rounded),
-            label: const Text('Compartilhar texto'),
+            label: Text(Lang.t('Compartilhar texto', 'Share text', 'Compartir texto')),
           ),
         ],
       ),
@@ -838,7 +856,7 @@ class _CreateScreenState extends State<CreateScreen> {
                 children: [
                   const Icon(Icons.auto_awesome_rounded, size: 20),
                   const SizedBox(width: 8),
-                  Text('Pack Criativos+',
+                  Text(Lang.t('Pack Criativos+', 'Creative Pack+', 'Pack Creativos+'),
                       style: Theme.of(ctx)
                           .textTheme
                           .titleMedium
@@ -846,10 +864,15 @@ class _CreateScreenState extends State<CreateScreen> {
                 ],
               ),
               const SizedBox(height: 6),
-              const Text(
-                  'Libere as fontes premium e o dobro de fundos Criativos por 24h. '
-                  'É grátis: basta assistir um vídeo rápido. Sem assinatura.',
-                  style: TextStyle(fontSize: 13.5, height: 1.4)),
+              Text(
+                  Lang.t(
+                      'Libere as fontes premium e o dobro de fundos Criativos por 24h. '
+                          'É grátis: basta assistir um vídeo rápido. Sem assinatura.',
+                      'Unlock the premium fonts and twice the Creative backgrounds for 24h. '
+                          'It\'s free: just watch a quick video. No subscription.',
+                      'Desbloquea las fuentes premium y el doble de fondos Creativos por 24h. '
+                          'Es gratis: solo mira un video corto. Sin suscripción.'),
+                  style: const TextStyle(fontSize: 13.5, height: 1.4)),
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
@@ -866,11 +889,15 @@ class _CreateScreenState extends State<CreateScreen> {
                       ..hideCurrentSnackBar()
                       ..showSnackBar(SnackBar(
                           content: Text(ok
-                              ? 'Liberado por 24h! Aproveite 🎉'
-                              : 'Vídeo indisponível agora, tente em instantes.')));
+                              ? Lang.t('Liberado por 24h! Aproveite 🎉',
+                                  'Unlocked for 24h! Enjoy 🎉',
+                                  '¡Desbloqueado por 24h! Disfruta 🎉')
+                              : Lang.t('Vídeo indisponível agora, tente em instantes.',
+                                  'Video unavailable now, try again shortly.',
+                                  'Video no disponible ahora, inténtalo en un momento.'))));
                   },
                   icon: const Icon(Icons.play_circle_fill_rounded),
-                  label: const Text('Assistir vídeo (grátis)'),
+                  label: Text(Lang.t('Assistir vídeo (grátis)', 'Watch video (free)', 'Ver video (gratis)')),
                 ),
               ),
             ],

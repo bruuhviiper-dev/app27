@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'l10n/lang.dart';
 import 'data/app_theme.dart';
 import 'data/verses.dart';
 import 'screens/create_screen.dart';
@@ -23,6 +25,8 @@ final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Idioma do app pelo aparelho: pt (padrão), en ou es. Define conteúdo + UI.
+  Lang.initFromDevice();
   // Edge-to-edge (Android 15 / SDK 35): desenha sob as barras; Flutter trata os insets.
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   // Aquece a fonte principal (Lora) durante a splash (sem "flash" de fonte).
@@ -65,8 +69,15 @@ class MensagensApp extends StatelessWidget {
       child: Consumer<AppState>(
         builder: (context, state, _) => MaterialApp(
           navigatorKey: rootNavigatorKey,
-          title: 'Frases para Fotos',
+          title: Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos'),
           debugShowCheckedModeBanner: false,
+          locale: Locale(Lang.code),
+          supportedLocales: const [Locale('pt'), Locale('en'), Locale('es')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           theme: AppTheme.light(state.accentColor),
           darkTheme: AppTheme.dark(state.accentColor),
           themeMode: state.themeMode,
@@ -217,27 +228,27 @@ class _HomeShellState extends State<HomeShell> {
                     AdsService.instance.registerActionAndMaybeShow();
                   }
                 },
-                destinations: const [
+                destinations: [
             NavigationDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home_rounded),
-                label: 'Início'),
+                icon: const Icon(Icons.home_outlined),
+                selectedIcon: const Icon(Icons.home_rounded),
+                label: Lang.t('Início', 'Home', 'Inicio')),
             NavigationDestination(
-                icon: Icon(Icons.image_outlined),
-                selectedIcon: Icon(Icons.image_rounded),
-                label: 'Imagens'),
+                icon: const Icon(Icons.image_outlined),
+                selectedIcon: const Icon(Icons.image_rounded),
+                label: Lang.t('Imagens', 'Images', 'Imágenes')),
             NavigationDestination(
-                icon: Icon(Icons.add_circle_outline_rounded),
-                selectedIcon: Icon(Icons.add_circle_rounded),
-                label: 'Criar'),
+                icon: const Icon(Icons.add_circle_outline_rounded),
+                selectedIcon: const Icon(Icons.add_circle_rounded),
+                label: Lang.t('Criar', 'Create', 'Crear')),
             NavigationDestination(
-                icon: Icon(Icons.favorite_border_rounded),
-                selectedIcon: Icon(Icons.favorite_rounded),
-                label: 'Favoritos'),
+                icon: const Icon(Icons.favorite_border_rounded),
+                selectedIcon: const Icon(Icons.favorite_rounded),
+                label: Lang.t('Favoritos', 'Favorites', 'Favoritos')),
             NavigationDestination(
                 icon: Icon(Icons.more_horiz_rounded),
                 selectedIcon: Icon(Icons.more_horiz_rounded),
-                label: 'Mais'),
+                label: Lang.t('Mais', 'More', 'Más')),
                 ],
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../data/models.dart';
+import '../l10n/lang.dart';
 import '../screens/create_screen.dart';
 import '../services/app_state.dart';
 import 'share_helper.dart';
@@ -36,39 +37,39 @@ class VerseTile extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  tooltip: 'Favoritar',
+                  tooltip: Lang.t('Favoritar', 'Favorite', 'Favorito'),
                   icon: Icon(fav ? Icons.favorite : Icons.favorite_border,
                       color: fav ? const Color(0xFFE11D48) : null),
                   onPressed: () =>
                       context.read<AppState>().toggleFavorite(verse),
                 ),
                 IconButton(
-                  tooltip: 'Editar',
+                  tooltip: Lang.t('Editar', 'Edit', 'Editar'),
                   icon: const Icon(Icons.edit_rounded),
                   onPressed: () => _edit(context, verse.text),
                 ),
                 IconButton(
-                  tooltip: 'Criar imagem',
+                  tooltip: Lang.t('Criar imagem', 'Create image', 'Crear imagen'),
                   icon: const Icon(Icons.image_rounded),
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .push(MaterialPageRoute(
                           builder: (_) => CreateScreen(initialText: verse.text))),
                 ),
                 IconButton(
-                  tooltip: 'Copiar',
+                  tooltip: Lang.t('Copiar', 'Copy', 'Copiar'),
                   icon: const Icon(Icons.copy_rounded),
                   onPressed: () async {
                     await ShareHelper.copy(verse.shareText);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Copiado!')),
+                        SnackBar(content: Text(Lang.t('Copiado!', 'Copied!', '¡Copiado!'))),
                       );
                     }
                   },
                 ),
                 const Spacer(),
                 IconButton(
-                  tooltip: 'Compartilhar',
+                  tooltip: Lang.t('Compartilhar', 'Share', 'Compartir'),
                   icon: const Icon(Icons.share_rounded),
                   onPressed: () => ShareHelper.share(verse.shareText),
                 ),
@@ -98,10 +99,10 @@ class VerseTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text('Editar frase',
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(Lang.t('Editar frase', 'Edit caption', 'Editar frase'),
+                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
             ),
             TextField(
               controller: c,
@@ -126,7 +127,7 @@ class VerseTile extends StatelessWidget {
                       if (ctx.mounted) Navigator.pop(ctx);
                     },
                     icon: const Icon(Icons.copy_rounded),
-                    label: const Text('Copiar'),
+                    label: Text(Lang.t('Copiar', 'Copy', 'Copiar')),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -137,7 +138,7 @@ class VerseTile extends StatelessWidget {
                       ShareHelper.share(c.text.trim());
                     },
                     icon: const Icon(Icons.share_rounded),
-                    label: const Text('Compartilhar'),
+                    label: Text(Lang.t('Compartilhar', 'Share', 'Compartir')),
                   ),
                 ),
               ],

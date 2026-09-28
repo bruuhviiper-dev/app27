@@ -35,7 +35,9 @@ class StoreProducts {
     kind: ProductKind.removeAds,
     title: 'Remover anúncios',
     description: 'Use o app sem interrupções. Pagamento único.',
-    fallbackPrice: 'R\$ 8,90',
+    // Sem fallback fixo em R$: o preço real vem localizado da Play (moeda da
+    // conta do comprador). Vazio => a loja mostra só o rótulo.
+    fallbackPrice: '',
     emoji: '🚫',
   );
 

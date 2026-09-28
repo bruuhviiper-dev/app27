@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/lang.dart';
 import '../widgets/share_helper.dart';
 
 /// Tela aberta ao TOCAR na notificação diária: mostra exatamente a frase
@@ -69,13 +70,15 @@ class MessageNotificationScreen extends StatelessWidget {
                     Expanded(
                       child: _ActionBtn(
                         icon: Icons.copy_rounded,
-                        label: 'Copiar',
+                        label: Lang.t('Copiar', 'Copy', 'Copiar'),
                         onTap: () async {
                           await ShareHelper.copy(message);
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Frase copiada 🌸')),
+                              SnackBar(
+                                  content: Text(Lang.t('Frase copiada 🌸',
+                                      'Caption copied 🌸',
+                                      'Frase copiada 🌸'))),
                             );
                           }
                         },
@@ -85,7 +88,7 @@ class MessageNotificationScreen extends StatelessWidget {
                     Expanded(
                       child: _ActionBtn(
                         icon: Icons.share_rounded,
-                        label: 'Enviar',
+                        label: Lang.t('Enviar', 'Send', 'Enviar'),
                         filled: true,
                         onTap: () => ShareHelper.share(message),
                       ),

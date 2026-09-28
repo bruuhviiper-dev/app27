@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../data/models.dart';
 import '../data/verses.dart';
+import '../l10n/lang.dart';
 import '../services/app_state.dart';
 import '../widgets/share_helper.dart';
 import 'create_screen.dart';
@@ -21,14 +22,14 @@ class MessagesScreen extends StatelessWidget {
     final itemCount = all.length;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Frases para Fotos')),
+      appBar: AppBar(title: Text(Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos'))),
       body: ListView.builder(
         padding: EdgeInsets.fromLTRB(16, 12, 16, 24 + MediaQuery.of(context).padding.bottom),
         itemCount: itemCount,
         itemBuilder: (context, i) {
           final msgIndex = i;
           final text = all[msgIndex].text;
-          final share = '$text\n\n📸 Frases para Fotos';
+          final share = '$text\n\n📸 ${Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos')}';
           final verse = Verse(text);
           final fav = state.isFavorite(verse.id);
           return Card(
@@ -43,7 +44,9 @@ class MessagesScreen extends StatelessWidget {
                     children: [
                       const Spacer(),
                       IconButton(
-                        tooltip: fav ? 'Desfavoritar' : 'Favoritar',
+                        tooltip: fav
+                            ? Lang.t('Desfavoritar', 'Unfavorite', 'Quitar de favoritos')
+                            : Lang.t('Favoritar', 'Favorite', 'Favorito'),
                         icon: Icon(
                             fav ? Icons.favorite : Icons.favorite_border,
                             size: 20,
@@ -52,26 +55,26 @@ class MessagesScreen extends StatelessWidget {
                             context.read<AppState>().toggleFavorite(verse),
                       ),
                       IconButton(
-                        tooltip: 'Copiar',
+                        tooltip: Lang.t('Copiar', 'Copy', 'Copiar'),
                         icon: const Icon(Icons.copy_rounded, size: 20),
                         onPressed: () async {
                           await ShareHelper.copy(share);
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Copiado!')),
+                              SnackBar(content: Text(Lang.t('Copiado!', 'Copied!', '¡Copiado!'))),
                             );
                           }
                         },
                       ),
                       IconButton(
-                        tooltip: 'Criar imagem',
+                        tooltip: Lang.t('Criar imagem', 'Create image', 'Crear imagen'),
                         icon: const Icon(Icons.image_rounded, size: 20),
                         onPressed: () => Navigator.of(context, rootNavigator: true)
                             .push(MaterialPageRoute(
                                 builder: (_) => CreateScreen(initialText: text))),
                       ),
                       IconButton(
-                        tooltip: 'Compartilhar',
+                        tooltip: Lang.t('Compartilhar', 'Share', 'Compartir'),
                         icon: const Icon(Icons.share_rounded, size: 20),
                         onPressed: () => ShareHelper.share(share),
                       ),

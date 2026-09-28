@@ -2,6 +2,7 @@
 import 'package:google_fonts/google_fonts.dart';
 
 import '../data/app_info.dart';
+import '../l10n/lang.dart';
 
 /// Abertura da marca (Frases para Fotos) — fundo rosa em gradiente, com animação de
 /// escala/fade. Desenhada por cima do app e esmaece (sem "piscar"), ver
@@ -73,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen>
                     FadeTransition(
                       opacity: fade,
                       child: Text(
-                        'Frases para Fotos',
+                        Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos'),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           fontSize: 26,
@@ -87,7 +88,9 @@ class _SplashScreenState extends State<SplashScreen>
                     FadeTransition(
                       opacity: fade,
                       child: Text(
-                        'a legenda perfeita pra sua foto ✨',
+                        Lang.t('a legenda perfeita pra sua foto ✨',
+                            'the perfect caption for your photo ✨',
+                            'la frase perfecta para tu foto ✨'),
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: const Color(0xFFFFF1F6),

@@ -8,6 +8,7 @@ import '../data/app_theme.dart';
 import '../data/models.dart';
 import '../data/story_backgrounds.dart';
 import '../data/verses.dart';
+import '../l10n/lang.dart';
 import '../services/app_state.dart';
 import '../widgets/share_helper.dart';
 import '../widgets/verse_image.dart';
@@ -24,7 +25,7 @@ class HomeScreen extends StatelessWidget {
     final state = context.watch<AppState>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Frases para Fotos'),
+        title: Text(Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos')),
         titleSpacing: 12,
         actions: [
           if (!state.adsRemoved)
@@ -35,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const StoreScreen()),
                 ),
                 icon: const Icon(Icons.block_rounded, size: 16),
-                label: const Text('Remover anúncio'),
+                label: Text(Lang.t('Remover anúncio', 'Remove ads', 'Quitar anuncios')),
                 style: FilledButton.styleFrom(
                   visualDensity: VisualDensity.compact,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -45,7 +46,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           IconButton(
-            tooltip: 'Cores e tema',
+            tooltip: Lang.t('Cores e tema', 'Colors & theme', 'Colores y tema'),
             icon: const Icon(Icons.palette_rounded),
             onPressed: () => _showThemePicker(context),
           ),
@@ -61,13 +62,13 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 14, 12, 8),
             child: Row(
               children: [
-                Text('Categorias',
+                Text(Lang.t('Categorias', 'Categories', 'Categorías'),
                     style: Theme.of(context).textTheme.titleLarge),
                 const Spacer(),
                 IconButton(
                   tooltip: state.categorySingleColumn
-                      ? 'Ver em 2 colunas'
-                      : 'Ver em 1 coluna',
+                      ? Lang.t('Ver em 2 colunas', 'View 2 columns', 'Ver en 2 columnas')
+                      : Lang.t('Ver em 1 coluna', 'View 1 column', 'Ver en 1 columna'),
                   visualDensity: VisualDensity.compact,
                   icon: Icon(state.categorySingleColumn
                       ? Icons.grid_view_rounded
@@ -115,14 +116,17 @@ void _showThemePicker(BuildContext context) {
               children: [
                 const Icon(Icons.palette_rounded, size: 20),
                 const SizedBox(width: 8),
-                Text('Escolha o tema',
+                Text(Lang.t('Escolha o tema', 'Choose theme', 'Elige el tema'),
                     style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800)),
               ],
             ),
             const SizedBox(height: 4),
-            const Text('Personalize as cores do app — tudo grátis.',
-                style: TextStyle(fontSize: 12.5, color: Colors.grey)),
+            Text(
+                Lang.t('Personalize as cores do app — tudo grátis.',
+                    'Customize the app colors — all free.',
+                    'Personaliza los colores de la app — todo gratis.'),
+                style: const TextStyle(fontSize: 12.5, color: Colors.grey)),
             const SizedBox(height: 8),
             Consumer<AppState>(
               builder: (c, s, _) => SwitchListTile(
@@ -130,7 +134,7 @@ void _showThemePicker(BuildContext context) {
                 secondary: Icon(s.isDark
                     ? Icons.dark_mode_rounded
                     : Icons.light_mode_rounded),
-                title: const Text('Modo escuro'),
+                title: Text(Lang.t('Modo escuro', 'Dark mode', 'Modo oscuro')),
                 value: s.isDark,
                 onChanged: (_) => s.toggleTheme(),
               ),
@@ -232,7 +236,7 @@ class _MessageOfDayState extends State<_MessageOfDay> {
 
   @override
   Widget build(BuildContext context) {
-    final share = '${_msg.text}\n\n📸 Frases para Fotos';
+    final share = '${_msg.text}\n\n📸 ${Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos')}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -242,8 +246,8 @@ class _MessageOfDayState extends State<_MessageOfDay> {
             children: [
               const Icon(Icons.auto_awesome_rounded, size: 16),
               const SizedBox(width: 6),
-              const Text('LEGENDA DO DIA',
-                  style: TextStyle(
+              Text(Lang.t('LEGENDA DO DIA', 'CAPTION OF THE DAY', 'FRASE DEL DÍA'),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.4,
                       fontSize: 12)),
@@ -251,7 +255,7 @@ class _MessageOfDayState extends State<_MessageOfDay> {
               TextButton.icon(
                 onPressed: _shuffle,
                 icon: const Icon(Icons.shuffle_rounded, size: 18),
-                label: const Text('Surpreenda-me'),
+                label: Text(Lang.t('Surpreenda-me', 'Surprise me', 'Sorpréndeme')),
                 style: TextButton.styleFrom(
                     visualDensity: VisualDensity.compact,
                     padding: const EdgeInsets.symmetric(horizontal: 8)),
@@ -286,28 +290,28 @@ class _MessageOfDayState extends State<_MessageOfDay> {
                 MaterialPageRoute(builder: (_) => const MessagesScreen()),
               ),
               icon: const Icon(Icons.forum_rounded, size: 18),
-              label: const Text('Ver mais'),
+              label: Text(Lang.t('Ver mais', 'See more', 'Ver más')),
             ),
             const Spacer(),
             IconButton(
-              tooltip: 'Copiar',
+              tooltip: Lang.t('Copiar', 'Copy', 'Copiar'),
               icon: const Icon(Icons.copy_rounded),
               onPressed: () async {
                 await ShareHelper.copy(share);
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Copiado!')),
+                    SnackBar(content: Text(Lang.t('Copiado!', 'Copied!', '¡Copiado!'))),
                   );
                 }
               },
             ),
             IconButton(
-              tooltip: 'Criar imagem',
+              tooltip: Lang.t('Criar imagem', 'Create image', 'Crear imagen'),
               icon: const Icon(Icons.image_rounded),
               onPressed: _openEditor,
             ),
             IconButton(
-              tooltip: 'Compartilhar imagem',
+              tooltip: Lang.t('Compartilhar imagem', 'Share image', 'Compartir imagen'),
               icon: _busy
                   ? const SizedBox(
                       width: 20,
@@ -417,8 +421,8 @@ class _CategoryTile extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                         locked
-                            ? 'Exclusivo'
-                            : '${category.verses.length} frases',
+                            ? Lang.t('Exclusivo', 'Exclusive', 'Exclusivo')
+                            : '${category.verses.length} ${Lang.t('frases', 'captions', 'frases')}',
                         style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.92),
                             fontSize: 12,

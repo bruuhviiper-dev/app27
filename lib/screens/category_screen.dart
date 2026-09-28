@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../data/image_backgrounds.dart';
 import '../data/models.dart';
+import '../l10n/lang.dart';
 import '../widgets/verse_tile.dart';
 import 'create_screen.dart';
 
@@ -47,15 +48,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 10, 16, 6),
               child: SegmentedButton<_View>(
-                segments: const [
+                segments: [
                   ButtonSegment(
                       value: _View.texto,
-                      icon: Icon(Icons.view_agenda_rounded),
-                      label: Text('Texto')),
+                      icon: const Icon(Icons.view_agenda_rounded),
+                      label: Text(Lang.t('Texto', 'Text', 'Texto'))),
                   ButtonSegment(
                       value: _View.imagem,
-                      icon: Icon(Icons.grid_view_rounded),
-                      label: Text('Imagem')),
+                      icon: const Icon(Icons.grid_view_rounded),
+                      label: Text(Lang.t('Imagem', 'Image', 'Imagen'))),
                 ],
                 selected: {_view},
                 onSelectionChanged: (s) => setState(() => _view = s.first),

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/app_info.dart';
 import '../data/app_theme.dart';
+import '../l10n/lang.dart';
 import 'settings_screen.dart';
 
 /// Aba "Mais": lembrete diário, avaliar, compartilhar o app e cross-promoção
@@ -42,14 +43,16 @@ class MoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final apps = AppInfo.otherApps;
     return Scaffold(
-      appBar: AppBar(title: const Text('Mais')),
+      appBar: AppBar(title: Text(Lang.t('Mais', 'More', 'Más'))),
       body: ListView(
         children: [
           ListTile(
             leading: const Icon(Icons.notifications_active_rounded,
                 color: Color(0xFF7C3AED)),
-            title: const Text('Lembrete diário'),
-            subtitle: const Text('Receba uma legenda no seu horário'),
+            title: Text(Lang.t('Lembrete diário', 'Daily reminder', 'Recordatorio diario')),
+            subtitle: Text(Lang.t('Receba uma legenda no seu horário',
+                'Get a caption at your chosen time',
+                'Recibe una frase a la hora que elijas')),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const SettingsScreen()),
@@ -58,51 +61,56 @@ class MoreScreen extends StatelessWidget {
           const Divider(height: 8),
           ListTile(
             leading: const Icon(Icons.star_rounded, color: Color(0xFFFBBF24)),
-            title: const Text('Avaliar na Play Store'),
-            subtitle: const Text('Sua nota ajuda muito 💛'),
+            title: Text(Lang.t('Avaliar na Play Store', 'Rate on Play Store', 'Calificar en Play Store')),
+            subtitle: Text(Lang.t('Sua nota ajuda muito 💛', 'Your rating helps a lot 💛', 'Tu reseña ayuda mucho 💛')),
             onTap: () => _open(AppInfo.playUrl),
           ),
           ListTile(
             leading: const Icon(Icons.ios_share_rounded),
-            title: const Text('Compartilhar o app'),
-            subtitle: const Text('Indique para os amigos'),
+            title: Text(Lang.t('Compartilhar o app', 'Share the app', 'Compartir la app')),
+            subtitle: Text(Lang.t('Indique para os amigos', 'Tell your friends', 'Recomiéndala a tus amigos')),
             onTap: () =>
-                Share.share('Conheça o ${AppInfo.appName}! ${AppInfo.playUrl}'),
+                Share.share(Lang.t('Conheça o ${AppInfo.appName}!',
+                        'Check out ${AppInfo.appName}!',
+                        '¡Descubre ${AppInfo.appName}!') +
+                    ' ${AppInfo.playUrl}'),
           ),
           const SizedBox(height: 8),
-          // ---- Cross-promoção em destaque ----
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 2),
-            child: Row(
-              children: [
-                const Text('✨', style: TextStyle(fontSize: 18)),
-                const SizedBox(width: 8),
-                Text('Mais apps da Phantom',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w900)),
-              ],
+          // ---- Cross-promoção em destaque (só PT: brecha da Elementare) ----
+          if (Lang.isPt) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 2),
+              child: Row(
+                children: [
+                  const Text('✨', style: TextStyle(fontSize: 18)),
+                  const SizedBox(width: 8),
+                  Text('Mais apps da Phantom',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w900)),
+                ],
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Text('Todos grátis. Toque para conhecer 👇',
-                style: TextStyle(fontSize: 12.5, color: Colors.grey)),
-          ),
-          for (int i = 0; i < apps.length; i++)
-            _PromoCard(
-              title: apps[i].$1,
-              emoji: _emojis[i % _emojis.length],
-              gradient: _grads[i % _grads.length],
-              onTap: () => _open(AppInfo.playUrlFor(apps[i].$2)),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text('Todos grátis. Toque para conhecer 👇',
+                  style: TextStyle(fontSize: 12.5, color: Colors.grey)),
             ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: OutlinedButton.icon(
-              onPressed: () => _open(AppInfo.devUrl),
-              icon: const Icon(Icons.storefront_rounded),
-              label: const Text('Ver todos os apps na Play Store'),
+            for (int i = 0; i < apps.length; i++)
+              _PromoCard(
+                title: apps[i].$1,
+                emoji: _emojis[i % _emojis.length],
+                gradient: _grads[i % _grads.length],
+                onTap: () => _open(AppInfo.playUrlFor(apps[i].$2)),
+              ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: OutlinedButton.icon(
+                onPressed: () => _open(AppInfo.devUrl),
+                icon: const Icon(Icons.storefront_rounded),
+                label: const Text('Ver todos os apps na Play Store'),
+              ),
             ),
-          ),
+          ],
           const SizedBox(height: 12),
           Center(
             child: Text('By: ${AppInfo.developer}',

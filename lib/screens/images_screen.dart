@@ -7,6 +7,7 @@ import '../data/photo_backgrounds.dart';
 import '../data/procedural_bg.dart';
 import '../data/textures.dart';
 import '../data/verses.dart';
+import '../l10n/lang.dart';
 import 'create_screen.dart';
 
 /// Galeria de imagens prontas (frase sobre um fundo bonito), com FILTROS por
@@ -79,7 +80,7 @@ class _ImagesScreenState extends State<ImagesScreen> {
   Widget build(BuildContext context) {
     final phrases = _phrases;
     return Scaffold(
-      appBar: AppBar(title: const Text('Imagens')),
+      appBar: AppBar(title: Text(Lang.t('Imagens', 'Images', 'Imágenes'))),
       body: SafeArea(
         top: false,
         child: Column(
@@ -94,10 +95,10 @@ class _ImagesScreenState extends State<ImagesScreen> {
                       padding: const EdgeInsets.only(right: 8),
                       child: ChoiceChip(
                         label: Text(switch (k) {
-                          _Kind.fundos => 'Fundos',
-                          _Kind.texturas => 'Texturas',
-                          _Kind.fotos => 'Fotos reais',
-                          _Kind.criativos => 'Criativos',
+                          _Kind.fundos => Lang.t('Fundos', 'Backgrounds', 'Fondos'),
+                          _Kind.texturas => Lang.t('Texturas', 'Textures', 'Texturas'),
+                          _Kind.fotos => Lang.t('Fotos reais', 'Real photos', 'Fotos reales'),
+                          _Kind.criativos => Lang.t('Criativos', 'Creative', 'Creativos'),
                         }),
                         selected: _kind == k,
                         onSelected: (_) => setState(() => _kind = k),

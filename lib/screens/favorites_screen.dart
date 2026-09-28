@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/lang.dart';
 import '../services/app_state.dart';
 import '../widgets/verse_tile.dart';
 
@@ -14,7 +15,7 @@ class FavoritesScreen extends StatelessWidget {
     final favs = state.favoriteVerses;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Favoritos')),
+      appBar: AppBar(title: Text(Lang.t('Favoritos', 'Favorites', 'Favoritos'))),
       body: favs.isEmpty
           ? Center(
               child: Padding(
@@ -29,10 +30,12 @@ class FavoritesScreen extends StatelessWidget {
                             .onSurface
                             .withValues(alpha: 0.3)),
                     const SizedBox(height: 12),
-                    Text('Nenhum favorito ainda',
+                    Text(Lang.t('Nenhum favorito ainda', 'No favorites yet', 'Aún no hay favoritos'),
                         style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: 4),
-                    Text('Toque no ♥ em uma mensagem para salvá-la aqui.',
+                    Text(Lang.t('Toque no ♥ em uma mensagem para salvá-la aqui.',
+                        'Tap the ♥ on a caption to save it here.',
+                        'Toca el ♥ en una frase para guardarla aquí.'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Theme.of(context)

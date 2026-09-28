@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../data/app_theme.dart';
 import '../data/models.dart';
+import '../l10n/lang.dart';
 
 /// Cartão da mensagem renderizado como IMAGEM (gradiente + texto), pronto para
 /// compartilhar/salvar. Quando um [captureKey] é passado, o conteúdo é
@@ -79,7 +80,7 @@ class VerseImageCard extends StatelessWidget {
               bottom: 12,
               left: 0,
               right: 0,
-              child: Text('📸 Frases para Fotos',
+              child: Text('📸 ${Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos')}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.82),
@@ -121,7 +122,7 @@ Future<bool> saveVerseImage(GlobalKey key) async {
   final bytes = await captureVerseImage(key);
   if (bytes == null) return false;
   try {
-    await Gal.putImageBytes(bytes, album: 'Frases para Fotos');
+    await Gal.putImageBytes(bytes, album: Lang.t('Frases para Fotos', 'Photo Captions', 'Frases para Fotos'));
     return true;
   } catch (_) {
     return false;

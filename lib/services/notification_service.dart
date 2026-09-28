@@ -3,6 +3,8 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../l10n/lang.dart';
+
 /// Notificação diária GENÉRICA (não revela a frase). Ao TOCAR, apenas
 /// abre o app para o usuário ver a legenda do dia.
 class NotificationService {
@@ -58,18 +60,23 @@ class NotificationService {
   Future<void> scheduleDaily(int hour, int minute) async {
     await init();
     await _plugin.cancel(_dailyId);
-    const title = 'Frases para Fotos 📸';
-    const body = 'Toque para ver a legenda do dia 📸';
+    // Notificação GENÉRICA no idioma do aparelho (não revela a frase).
+    final title = Lang.t('Frases para Fotos 📸', 'Photo Captions 📸', 'Frases para Fotos 📸');
+    final body = Lang.t('Toque para ver a legenda do dia 📸',
+        'Tap to see today\'s caption 📸',
+        'Toca para ver la frase del día 📸');
     await _plugin.zonedSchedule(
       _dailyId,
       title,
       body,
       _nextInstance(hour, minute),
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
           'daily_frase',
-          'Frase do dia',
-          channelDescription: 'Um lembrete diário para abrir o app',
+          Lang.t('Frase do dia', 'Caption of the day', 'Frase del día'),
+          channelDescription: Lang.t('Um lembrete diário para abrir o app',
+              'A daily reminder to open the app',
+              'Un recordatorio diario para abrir la app'),
           importance: Importance.high,
           priority: Priority.high,
         ),
