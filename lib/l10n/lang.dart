@@ -13,6 +13,13 @@ class Lang {
   static String code = 'pt';
 
   static void initFromDevice() {
+    // Override de teste: `--dart-define=LANG_OVERRIDE=en|es|pt` força o idioma
+    // sem mexer no idioma do aparelho. Vazio (produção) => detecção normal.
+    const override = String.fromEnvironment('LANG_OVERRIDE');
+    if (override == 'en' || override == 'es' || override == 'pt') {
+      code = override;
+      return;
+    }
     final l = PlatformDispatcher.instance.locale.languageCode.toLowerCase();
     if (l == 'en') {
       code = 'en';
