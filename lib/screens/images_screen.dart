@@ -85,15 +85,18 @@ class _ImagesScreenState extends State<ImagesScreen> {
         top: false,
         child: Column(
           children: [
-            // ---- Filtros por tipo ----
+            // ---- Filtros por tipo (Wrap: adapta à largura, nenhum chip é
+            // cortado; quebra para a 2ª linha em telas estreitas). ----
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
-              child: Row(
-                children: [
-                  for (final k in _Kind.values)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: ChoiceChip(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final k in _Kind.values)
+                      ChoiceChip(
                         label: Text(switch (k) {
                           _Kind.fundos => Lang.t('Fundos', 'Backgrounds', 'Fondos'),
                           _Kind.texturas => Lang.t('Texturas', 'Textures', 'Texturas'),
@@ -103,8 +106,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
                         selected: _kind == k,
                         onSelected: (_) => setState(() => _kind = k),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(
