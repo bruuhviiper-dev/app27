@@ -184,7 +184,7 @@ void _showThemePicker(BuildContext context) {
                         const SizedBox(height: 6),
                         SizedBox(
                           width: 72,
-                          child: Text(p.name,
+                          child: Text(AppPalettes.displayName(p),
                               textAlign: TextAlign.center,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,

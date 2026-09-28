@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/lang.dart';
+
 /// Paleta de cores vendável (tema do app). A "clássica" é grátis.
 class AppPalette {
   const AppPalette({
@@ -72,4 +74,15 @@ class AppPalettes {
 
   static AppPalette byId(String id) =>
       all.firstWhere((p) => p.id == id, orElse: () => classico);
+
+  /// Nome do tema no idioma do aparelho (UI 100% traduzida).
+  static String displayName(AppPalette p) => switch (p.id) {
+        'dourado' => Lang.t('Dourado', 'Golden', 'Dorado'),
+        'oliveira' => Lang.t('Floresta', 'Forest', 'Bosque'),
+        'ceu' => Lang.t('Céu', 'Sky', 'Cielo'),
+        'purpura' => Lang.t('Púrpura Real', 'Royal Purple', 'Púrpura Real'),
+        'aurora' => 'Aurora',
+        'noturno' => Lang.t('Noturno', 'Night', 'Nocturno'),
+        _ => 'Rosé',
+      };
 }
